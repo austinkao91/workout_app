@@ -1,0 +1,23 @@
+<%= form_for(@exercise) do |f| %>
+  <% if @exercise.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@exercise.errors.count, "error") %> prohibited this exercise from being saved:</h2>
+
+      <ul>
+      <% @exercise.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <form class="sign-form-fields" action="/users" method="post">
+      <%= auth_token %>
+      <label> Exercise
+        <input type="text" class="form-control" name="exercise[name]" value="<%= @exercise.name %>">
+      </label>
+      <input class="form-control sign-submit" type="submit" value="Add Exercise!">
+    </form>
+  </div>
+<% end %>
