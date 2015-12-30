@@ -1,0 +1,21 @@
+<%= form_for(@exercise_name) do |f| %>
+  <% if @exercise_name.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@exercise_name.errors.count, "error") %> prohibited this exercise_name from being saved:</h2>
+
+      <ul>
+      <% @exercise_name.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

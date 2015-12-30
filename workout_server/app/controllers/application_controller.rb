@@ -2,38 +2,15 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  helper_method :current_user, :signed_in?, :sign_out, :guest_log_in
+  after_filter :set_csrf_cookie_for_ng
 
-  def redirect_to_root
-    redirect_to root_url if current_user
+  def set_csrf_cookie_for_ng
+    debugger
+    cookies['XSRF-TOKEN'] = session[:_csrf_token] if protect_against_forgery?
   end
-  
-  private
-  def current_user
-    @current_user ||= User.includes(:reviews).find_by_session_token(session[:session_token])
-  end
-
-  def signed_in?
-    !!current_user
-  end
-
-  def sign_in(user)
-    @current_user = user
-    session[:session_token] = user.reset_session_token!
-  end
-
-  def sign_out
-    current_user.try(:reset_token!)
-    session[:session_token] = nil
-
-  end
-
-  def guest_log_in
-    sign_in(User.find(1))
-    redirect_to root_url
-  end
-
-  def require_signed_in!
-    redirect_to new_session_url unless signed_in?
+  protected
+  def verified_request?
+    debugger
+    super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
   end
 end

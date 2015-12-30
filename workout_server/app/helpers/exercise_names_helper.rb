@@ -1,0 +1,2 @@
+module ExerciseNamesHelper
+end
